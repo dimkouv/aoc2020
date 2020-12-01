@@ -37,10 +37,6 @@ func runP1(reader io.Reader) (int, error) {
 
 	for i := range nums {
 		for j := i + 1; j < len(nums); j++ {
-			if i == j {
-				continue
-			}
-
 			if nums[i]+nums[j] == 2020 {
 				return nums[i] * nums[j], nil
 			}
@@ -63,10 +59,6 @@ func runP2(reader io.Reader) (int, error) {
 			}
 
 			for z := j + 1; z < len(nums); z++ {
-				if z == i || z == j {
-					continue
-				}
-
 				if nums[i]+nums[j]+nums[z] == 2020 {
 					return nums[i] * nums[j] * nums[z], nil
 				}
