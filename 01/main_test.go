@@ -52,3 +52,18 @@ func TestRun(t *testing.T) {
 	assert.NoError(t, err)
 	t.Log("p2>>>", numP2)
 }
+
+func BenchmarkRun(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		f, err := os.Open("input.txt")
+		assert.NoError(b, err)
+		r := bufio.NewReader(f)
+		_, err = runP1(r)
+		assert.NoError(b, err)
+
+		f.Seek(0, io.SeekStart)
+		r = bufio.NewReader(f)
+		_, err = runP2(r)
+		assert.NoError(b, err)
+	}
+}

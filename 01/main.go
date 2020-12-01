@@ -36,7 +36,7 @@ func runP1(reader io.Reader) (int, error) {
 	}
 
 	for i := range nums {
-		for j := range nums {
+		for j := i + 1; j < len(nums); j++ {
 			if i == j {
 				continue
 			}
@@ -57,12 +57,12 @@ func runP2(reader io.Reader) (int, error) {
 	}
 
 	for i := range nums {
-		for j := range nums {
-			if i == j || nums[i]+nums[j] > 2020 {
+		for j := i + 1; j < len(nums); j++ {
+			if nums[i]+nums[j] > 2020 {
 				continue
 			}
 
-			for z := range nums {
+			for z := j + 1; z < len(nums); z++ {
 				if z == i || z == j {
 					continue
 				}
