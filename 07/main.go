@@ -3,6 +3,7 @@ package zeroseven
 import (
 	"bufio"
 	"io"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -22,30 +23,16 @@ func (g *graph) fromReader(reader io.Reader) *graph {
 	nodes := make(map[string]map[string]int)
 
 	for scanner.Scan() {
-		outerBagClr, innerBugClr, num := "", "", 0
-		replacer := strings.NewReplacer("bags", "", "bag", "", ".", "", ",", "")
-		parts := strings.Split(strings.Trim(replacer.Replace(scanner.Text()), " "), " ")
+		t := scanner.Text()
+		outerBagClr := t[:strings.Index(t, " bag")]
+		nodes[outerBagClr] = make(map[string]int)
 
-		for _, part := range parts {
-			if part == "contain" {
-				outerBagClr = strings.TrimRight(outerBagClr, " ")
-				nodes[outerBagClr] = map[string]int{}
-			} else if n, err := strconv.Atoi(part); err == nil {
-				if innerBugClr != "" {
-					innerBugClr = strings.TrimRight(innerBugClr, " ")
-					nodes[outerBagClr][innerBugClr] = num
-				}
-				innerBugClr = ""
-				num = n
-			} else if num == 0 {
-				outerBagClr += part + " "
-			} else {
-				innerBugClr += part + " "
-			}
-		}
-		if _, exists := nodes[outerBagClr]; exists {
-			innerBugClr = strings.TrimRight(innerBugClr, " ")
-			nodes[outerBagClr][innerBugClr] = num
+		innerBagRgx := regexp.MustCompile("([0-9]+) ([a-z]+ [a-z]+)")
+		innerBagMatches := innerBagRgx.FindAllStringSubmatch(t, -1)
+		for i := range innerBagMatches {
+			innerBagCnt, _ := strconv.Atoi(innerBagMatches[i][1])
+			innerBagClr := innerBagMatches[i][2]
+			nodes[outerBagClr][innerBagClr] = innerBagCnt
 		}
 	}
 
