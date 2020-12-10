@@ -46,17 +46,16 @@ func runP2(reader io.Reader) (int, error) {
 	nums = append([]int{0}, nums...)         // outlet
 	nums = append(nums, nums[len(nums)-1]+3) // device's adapter
 
-	counter := &counter{counted: make(map[string]int)}
+	counter := &counter{counted: make(map[int]int)}
 	return counter.count(nums) + 1, nil
 }
 
 type counter struct {
-	counted map[string]int // cache for computed counts
+	counted map[int]int // cache for computed counts
 }
 
 func (c *counter) count(nums []int) int {
-	key := fmt.Sprintf("%v", nums)
-	if cnt, exists := c.counted[key]; exists {
+	if cnt, exists := c.counted[nums[0]]; exists {
 		return cnt
 	}
 
@@ -70,6 +69,6 @@ func (c *counter) count(nums []int) int {
 		}
 	}
 
-	c.counted[key] = cnt
+	c.counted[nums[0]] = cnt
 	return cnt
 }
