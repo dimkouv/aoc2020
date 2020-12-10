@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func readNums(reader io.Reader) ([]int, error) {
+func ReadNums(reader io.Reader) ([]int, error) {
 	b, err := ioutil.ReadAll(reader)
 	if err != nil {
 		return nil, err
@@ -30,7 +30,7 @@ func readNums(reader io.Reader) ([]int, error) {
 }
 
 func runP1(reader io.Reader) (int, error) {
-	nums, err := readNums(reader)
+	nums, err := ReadNums(reader)
 	if err != nil {
 		return 0, err
 	}
@@ -47,7 +47,7 @@ func runP1(reader io.Reader) (int, error) {
 }
 
 func runP2(reader io.Reader) (int, error) {
-	nums, err := readNums(reader)
+	nums, err := ReadNums(reader)
 	if err != nil {
 		return 0, err
 	}
