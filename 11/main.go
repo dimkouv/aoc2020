@@ -44,11 +44,11 @@ func (f *grid) runSimulationRound() int {
 		for j := range f.items[i] {
 			item := f.items[i][j]
 
-			adjacent := f.numOccupiedSeats(i, j)
-			if item == itemEmptySeat && adjacent == 0 {
+			occupied := f.numOccupiedSeats(i, j)
+			if item == itemEmptySeat && occupied == 0 {
 				itemsCopy[i][j] = itemNonEmptySeat
 				numChanges++
-			} else if item == itemNonEmptySeat && adjacent >= f.personTolerance {
+			} else if item == itemNonEmptySeat && occupied >= f.personTolerance {
 				itemsCopy[i][j] = itemEmptySeat
 				numChanges++
 			}
