@@ -28,27 +28,27 @@ func soonestBus(t0 int, buses []int) (bus, departure int) {
 	return bus, departure
 }
 
-func runP2(busses []int) (num int) {
+func runP2(buses []int) (num int) {
 	offsets := make([]int, 0)
-	for i := len(busses) - 1; i >= 0; i-- {
-		if busses[i] != -1 {
+	for i := len(buses) - 1; i >= 0; i-- {
+		if buses[i] != -1 {
 			offsets = append([]int{i}, offsets...)
 		} else {
-			busses = append(busses[:i], busses[i+1:]...)
+			buses = append(buses[:i], buses[i+1:]...)
 		}
 	}
 
 	incr := 1
-	t := busses[0]
+	t := buses[0]
 
-	// after matching :patternN final busses two times update incr
-	patternN := int(math.Min(float64(len(busses)-3), 4))
+	// after matching :patternN final buses two times update incr
+	patternN := int(math.Min(float64(len(buses)-3), 4))
 	patternT := 0
 
 	for {
 		numMatched := 0
 		for i := len(offsets) - 1; i >= 0; i-- {
-			if mod := (t + offsets[i]) % busses[i]; mod != 0 {
+			if mod := (t + offsets[i]) % buses[i]; mod != 0 {
 				break
 			}
 			numMatched++
