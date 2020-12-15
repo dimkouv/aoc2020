@@ -19,7 +19,7 @@ func play(inp []int, maxIter int) int {
 
 		p, exists := pos[num]
 		switch {
-		case !exists: // seen for first time
+		case !exists: // never seen
 			pos[num] = [2]int{i + 1}
 		case p[1] == 0: // seen once
 			pos[num] = [2]int{p[0], i + 1}
