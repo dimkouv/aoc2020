@@ -8,41 +8,31 @@ with open("input.txt") as f:
         allergens = set(parts[1][:-1].split(", "))
         foods.append((ingredients, allergens))
 
-all_ingredients = set()
-for r in foods:
-    all_ingredients.update(r[0])
-
 candidates = dict()
 for f in foods:
-    for ingr in f[1]:
-        if ingr in candidates:
-            candidates[ingr] = candidates[ingr].intersection(f[0])
-            pass
+    for alrg in f[1]:
+        if alrg in candidates:
+            candidates[alrg] = candidates[alrg].intersection(f[0])
         else:
-            candidates[ingr] = f[:][0]
+            candidates[alrg] = f[0]
 
-allergenic_ingredients = set()
-for c in candidates:
-    allergenic_ingredients.update(candidates[c])
-
+allergenic_ingredients = set().union(*[candidates[c] for c in candidates])
+all_ingredients = set().union(*[r[0] for r in foods])
 non_allergenic_ingredients = all_ingredients - allergenic_ingredients
-cnt = 0
-for f in foods:
-    cnt += len(f[0].intersection(non_allergenic_ingredients))
-print(cnt)
 
-# part2
+# part1
+print(sum([len(f[0].intersection(non_allergenic_ingredients)) for f in foods]))
+
 found = {}
 while candidates:
-    for c in candidates:
+    for c in list(candidates.keys()):
         allergen, ingredients = c, candidates[c]
         if len(ingredients) == 1:
             found[allergen] = ingredients.pop()
-        candidates[c] -= set(found.values())
-
-    for f in found:
-        if f in candidates:
-            del candidates[f]
+            if allergen in candidates:
+                del candidates[allergen]
+        else:
+            candidates[c] -= set(found.values())
 
 allergens, ingredients = [], []
 for f in found:
@@ -50,4 +40,6 @@ for f in found:
     ingredients.append(found[f])
 
 allergens, ingredients = zip(*sorted(zip(allergens, ingredients)))
+
+# part2
 print(",".join(ingredients))
